@@ -36,11 +36,13 @@ namespace Gamekit3D
         protected Collider m_Collider;
 
         System.Action schedule;
+        EventHandler eventHandler;
 
         void Start()
         {
             ResetDamage();
             m_Collider = GetComponent<Collider>();
+            eventHandler = GameObject.FindGameObjectWithTag("EventHandler").GetComponent<EventHandler>();
         }
 
         void Update()
@@ -72,6 +74,8 @@ namespace Gamekit3D
 
         public void ApplyDamage(DamageMessage data)
         {
+            eventHandler.AddDamageEvent();
+
             if (currentHitPoints <= 0)
             {//ignore damage if already dead. TODO : may have to change that if we want to detect hit on death...
                 return;
