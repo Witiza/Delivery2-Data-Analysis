@@ -32,7 +32,7 @@ public class EventData : MonoBehaviour
         timestamp = System.DateTime.Now;
     }
 
-    string GetJson()
+    public string GetJson()
     {
         string json = JsonUtility.ToJson(this);
         return json;

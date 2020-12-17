@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Gamekit3D;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,7 +32,8 @@ public class EventHandler : MonoBehaviour
         }
     }
 
-    public void AddPositionEvent()
+    // Events
+    public void AddPlayerPositionEvent()
     {
         eventCount++;
 
@@ -39,11 +41,43 @@ public class EventHandler : MonoBehaviour
         eventList.Add(newEvent);
     }
 
-    public void AddDamageEvent()
+    public void AddButtonPressedEvent()
     {
-        /*eventCount++;
+        eventCount++;
 
-        DealDamage newEvent = new DealDamage();
+        ButtonPressed newEvent = new ButtonPressed(player.transform.position, eventCount);
+        eventList.Add(newEvent);
+    }
+
+    public void AddPlayerDeathEvent(Damageable character)
+    {
+        eventCount++;
+
+        /*PlayerDeath newEvent = new PlayerDeath(player.transform.position, eventCount, enemyType);
         eventList.Add(newEvent);*/
+    }
+
+    public void AddReceiveDamageEvent(Damageable character)
+    {
+        eventCount++;
+
+        /*ReceiveDamage newEvent = new ReceiveDamage(player.transform.position, eventCount, enemyType);
+        eventList.Add(newEvent);*/
+    }
+
+    public void AddDealDamageEvent(EnemyType enemyType)
+    {
+        eventCount++;
+
+        DealDamage newEvent = new DealDamage(player.transform.position, eventCount, enemyType);
+        eventList.Add(newEvent);
+    }
+
+    public void AddEnemyKilledEvent(EnemyType enemyType)
+    {
+        eventCount++;
+
+        EnemyKilled newEvent = new EnemyKilled(player.transform.position, eventCount, enemyType);
+        eventList.Add(newEvent);
     }
 }

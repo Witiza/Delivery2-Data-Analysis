@@ -14,7 +14,6 @@ namespace Gamekit3D
         [Tooltip("Time that this gameObject is invulnerable for, after receiving damage.")]
         public float invulnerabiltyTime;
 
-
         [Tooltip("The angle from the which that damageable is hitable. Always in the world XZ plane, with the forward being rotate by hitForwardRoation")]
         [Range(0.0f, 360.0f)]
         public float hitAngle = 360.0f;
@@ -36,13 +35,11 @@ namespace Gamekit3D
         protected Collider m_Collider;
 
         System.Action schedule;
-        EventHandler eventHandler;
 
         void Start()
         {
             ResetDamage();
             m_Collider = GetComponent<Collider>();
-            eventHandler = GameObject.FindGameObjectWithTag("EventHandler").GetComponent<EventHandler>();
         }
 
         void Update()
@@ -74,8 +71,6 @@ namespace Gamekit3D
 
         public void ApplyDamage(DamageMessage data)
         {
-            eventHandler.AddDamageEvent();
-
             if (currentHitPoints <= 0)
             {//ignore damage if already dead. TODO : may have to change that if we want to detect hit on death...
                 return;
@@ -135,7 +130,6 @@ namespace Gamekit3D
                 UnityEditor.Handles.ArrowHandleCap(0, transform.position, Quaternion.LookRotation(forward), 1.0f,
                     EventType.Repaint);
             }
-
 
             UnityEditor.Handles.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
             forward = Quaternion.AngleAxis(-hitAngle * 0.5f, transform.up) * forward;
