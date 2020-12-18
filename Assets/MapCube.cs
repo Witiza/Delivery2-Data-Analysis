@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapCube : MonoBehaviour
+public class MapCube 
 {
-    // Start is called before the first frame update
-    void Start()
+    Vector3 position;
+    MapCube(Vector2 pos)
     {
-        
+        position.x = pos.x;
+        position.y = 1;
+        position.z = pos.y;
+    }
+    public void Draw()
+    {
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawCube(position, Vector3.one);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
