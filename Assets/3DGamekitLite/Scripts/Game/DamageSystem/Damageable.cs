@@ -14,7 +14,6 @@ namespace Gamekit3D
         [Tooltip("Time that this gameObject is invulnerable for, after receiving damage.")]
         public float invulnerabiltyTime;
 
-
         [Tooltip("The angle from the which that damageable is hitable. Always in the world XZ plane, with the forward being rotate by hitForwardRoation")]
         [Range(0.0f, 360.0f)]
         public float hitAngle = 360.0f;
@@ -131,7 +130,6 @@ namespace Gamekit3D
                 UnityEditor.Handles.ArrowHandleCap(0, transform.position, Quaternion.LookRotation(forward), 1.0f,
                     EventType.Repaint);
             }
-
 
             UnityEditor.Handles.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
             forward = Quaternion.AngleAxis(-hitAngle * 0.5f, transform.up) * forward;
