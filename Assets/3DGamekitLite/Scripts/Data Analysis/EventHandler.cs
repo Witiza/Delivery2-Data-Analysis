@@ -56,7 +56,7 @@ public class EventHandler : MonoBehaviour
         PlayerPosition newEvent = new PlayerPosition(character.transform.position, eventCount);
         eventList.Add(newEvent);
 
-        Debug.Log(newEvent.GetJson());
+        //Debug.Log(newEvent.GetJson());
     }
 
     public void AddButtonPressedEvent(Vector3 position)
@@ -67,34 +67,47 @@ public class EventHandler : MonoBehaviour
         eventList.Add(newEvent);
     }
 
-    public void AddDeathEvent(Damageable character, DamageMessage msg)
+    public void AddDeathEvent(GameObject character, GameObject damager)
     {
         eventCount++;
 
-        if (LayerMask.LayerToName(msg.damager.gameObject.layer) == "Player")
+        if (LayerMask.LayerToName(damager.layer) == "Player")
         {
-            EnemyKilled newEvent = new EnemyKilled(msg.damager.gameObject.transform.position, eventCount, character.gameObject.name);
+            EnemyKilled newEvent = new EnemyKilled(damager.transform.position, eventCount, character.name);
             eventList.Add(newEvent);
+            Debug.Log(newEvent.GetJson());
         }
-        else if (LayerMask.LayerToName(msg.damager.gameObject.layer) == "Enemy")
+        else if (LayerMask.LayerToName(damager.layer) == "Enemy" || LayerMask.LayerToName(damager.layer) == "Collider")
         {
-            PlayerDeath newEvent = new PlayerDeath(character.transform.position, eventCount, msg.damager.gameObject.name);
+            string enemy = damager.transform.parent?.gameObject.name;
+            if (damager.GetComponent<Spit>() != null)
+                enemy = "Spitter";
+
+            PlayerDeath newEvent = new PlayerDeath(character.transform.position, eventCount, enemy);
             eventList.Add(newEvent);
+            Debug.Log(newEvent.GetJson());
         }
-        else
+        else if (LayerMask.LayerToName(damager.layer) == "Environment")
         {
-            int a = 0;
+            PlayerDeath newEvent = new PlayerDeath(character.transform.position, eventCount, damager.name);
+            eventList.Add(newEvent);
+            Debug.Log(newEvent.GetJson());
         }
     }
 
-    public void AddDamageEvent(Damageable character, DamageMessage msg)
+    public void AddDamageEvent(GameObject character, GameObject damager)
     {
         eventCount++;
 
-        if (LayerMask.LayerToName(msg.damager.gameObject.layer) == "Enemy")
+        if (LayerMask.LayerToName(damager.layer) == "Enemy" || LayerMask.LayerToName(damager.layer) == "Collider")
         {
-            ReceiveDamage newEvent = new ReceiveDamage(character.transform.position, eventCount, msg.damager.gameObject.name);
+            string enemy = damager.transform.parent?.gameObject.name;
+            if (damager.GetComponent<Spit>() != null)
+                enemy = "Spitter";
+
+            ReceiveDamage newEvent = new ReceiveDamage(character.transform.position, eventCount, enemy);
             eventList.Add(newEvent);
+            Debug.Log(newEvent.GetJson());
         }
     }
 
