@@ -13,11 +13,12 @@ public enum DataType
     ENEMY_KILLED
 }
 
-public class EventData : MonoBehaviour
+[Serializable]
+public class EventData 
 {
-    protected uint event_id = 0;
-    protected DataType dataType = DataType.NONE;
-    protected DateTime timestamp;
+    public uint event_id = 0;
+    public DataType dataType = DataType.NONE;
+    public DateTime timestamp;
 
     protected EventData(uint event_id)
     {
@@ -40,7 +41,7 @@ public class PlayerPosition : EventData
         this.position = position;
     }
 
-    Vector3 position;
+    public Vector3 position;
 }
 
 public class ButtonPressed : EventData
@@ -51,7 +52,7 @@ public class ButtonPressed : EventData
         this.position = position;
     }
 
-    Vector3 position;
+    public Vector3 position;
 }
 
 public class PlayerDeath : EventData
@@ -63,8 +64,8 @@ public class PlayerDeath : EventData
         this.enemyType = enemyType;
     }
 
-    Vector3 position;
-    string enemyType;
+    public Vector3 position;
+    public string enemyType;
 }
 
 public class ReceiveDamage : EventData
@@ -76,8 +77,8 @@ public class ReceiveDamage : EventData
         this.enemyType = enemyType;
     }
 
-    Vector3 position;
-    string enemyType;
+    public Vector3 position;
+    public string enemyType;
 }
 
 public class EnemyKilled : EventData
@@ -89,6 +90,6 @@ public class EnemyKilled : EventData
         this.enemyType = enemyType;
     }
 
-    Vector3 position;
-    string enemyType;
+    public Vector3 position;
+    public string enemyType;
 }

@@ -35,8 +35,8 @@ public class EventHandler : MonoBehaviour
     
     void Update()
     {
-        // Send list of stored events every 5 seconds
-        if (Time.time - lastTimeSent > 5)
+        // Send list of stored events every 3 seconds
+        if (Time.time - lastTimeSent > 3)
         {
             foreach (EventData e in eventList)
             {
@@ -55,6 +55,8 @@ public class EventHandler : MonoBehaviour
 
         PlayerPosition newEvent = new PlayerPosition(character.transform.position, eventCount);
         eventList.Add(newEvent);
+
+        Debug.Log(newEvent.GetJson());
     }
 
     public void AddButtonPressedEvent(Vector3 position)
