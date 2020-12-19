@@ -10,21 +10,15 @@ public enum DataType
     BUTTON_PRESSED,
     PLAYER_DEATH,
     RECEIVE_DAMAGE,
-    DEAL_DAMAGE,
     ENEMY_KILLED
 }
 
-public enum EnemyType
+[Serializable]
+public class EventData 
 {
-    CHOMPER = 0,
-    SPITTER
-}
-
-public class EventData : MonoBehaviour
-{
-    protected uint event_id = 0;
-    protected DataType dataType = DataType.NONE;
-    protected DateTime timestamp;
+    public uint event_id = 0;
+    public DataType dataType = DataType.NONE;
+    public DateTime timestamp;
 
     protected EventData(uint event_id)
     {
@@ -47,7 +41,7 @@ public class PlayerPosition : EventData
         this.position = position;
     }
 
-    Vector3 position;
+    public Vector3 position;
 }
 
 public class ButtonPressed : EventData
@@ -58,57 +52,44 @@ public class ButtonPressed : EventData
         this.position = position;
     }
 
-    Vector3 position;
+    public Vector3 position;
 }
 
 public class PlayerDeath : EventData
 {
-    public PlayerDeath(Vector3 position, uint event_id, EnemyType enemyType) : base(event_id)
+    public PlayerDeath(Vector3 position, uint event_id, string enemyType) : base(event_id)
     {
         dataType = DataType.PLAYER_DEATH;
         this.position = position;
         this.enemyType = enemyType;
     }
 
-    Vector3 position;
-    EnemyType enemyType;
+    public Vector3 position;
+    public string enemyType;
 }
 
 public class ReceiveDamage : EventData
 {
-    public ReceiveDamage(Vector3 position, uint event_id, EnemyType enemyType) : base(event_id)
+    public ReceiveDamage(Vector3 position, uint event_id, string enemyType) : base(event_id)
     {
         dataType = DataType.RECEIVE_DAMAGE;
         this.position = position;
         this.enemyType = enemyType;
     }
 
-    Vector3 position;
-    EnemyType enemyType;
-}
-
-public class DealDamage : EventData
-{
-    public DealDamage(Vector3 position, uint event_id, EnemyType enemyType) : base(event_id)
-    {
-        dataType = DataType.DEAL_DAMAGE;
-        this.position = position;
-        this.enemyType = enemyType;
-    }
-
-    Vector3 position;
-    EnemyType enemyType;
+    public Vector3 position;
+    public string enemyType;
 }
 
 public class EnemyKilled : EventData
 {
-    public EnemyKilled(Vector3 position, uint event_id, EnemyType enemyType) : base(event_id)
+    public EnemyKilled(Vector3 position, uint event_id, string enemyType) : base(event_id)
     {
         dataType = DataType.ENEMY_KILLED;
         this.position = position;
         this.enemyType = enemyType;
     }
 
-    Vector3 position;
-    EnemyType enemyType;
+    public Vector3 position;
+    public string enemyType;
 }
