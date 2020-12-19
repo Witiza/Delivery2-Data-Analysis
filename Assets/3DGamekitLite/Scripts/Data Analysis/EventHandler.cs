@@ -40,7 +40,7 @@ public class EventHandler : MonoBehaviour
         {
             foreach (EventData e in eventList)
             {
-                // cositas amb el codi de l'ivan
+                Load(e);    
             }
 
             lastTimeSent = Time.time;
@@ -95,6 +95,35 @@ public class EventHandler : MonoBehaviour
         {
             ReceiveDamage newEvent = new ReceiveDamage(character.transform.position, eventCount, msg.damager.gameObject.name);
             eventList.Add(newEvent);
+        }
+    }
+
+    public void Load(EventData eventData)
+    {
+        string data = eventData.GetJson();
+        string[] variables = data.Split(',');
+        foreach (string variable in variables)
+        { 
+            if (variable == "\"dataType\":1")
+            {
+
+            }
+            else if (variable == "\"dataType\":2")
+            {
+
+            }
+            else if(variable == "\"dataType\":3")
+            {
+
+            }
+            else if(variable == "\"dataType\":4")
+            {
+
+            }
+            else if(variable == "\"dataType\":5")
+            {
+
+            }
         }
     }
 }
