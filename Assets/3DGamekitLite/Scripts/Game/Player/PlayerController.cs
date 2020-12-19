@@ -12,6 +12,10 @@ namespace Gamekit3D
         protected static PlayerController s_Instance;
         public static PlayerController instance { get { return s_Instance; } }
 
+        public delegate void MyDataEvent(PlayerController controller);
+        public static MyDataEvent positionDelegateEvent;
+        private float lastTimeSent = 0.0f;
+
         public bool respawning { get { return m_Respawning; } }
 
         public float maxForwardSpeed = 8f;        // How fast Ellen can run.
@@ -205,6 +209,12 @@ namespace Gamekit3D
             TimeoutToIdle();
 
             m_PreviouslyGrounded = m_IsGrounded;
+
+            if (Time.time - lastTimeSent > 0.5f)
+            {
+                positionDelegateEvent?.Invoke(this);
+                lastTimeSent = Time.time;
+            }
         }
 
         // Called at the start of FixedUpdate to record the current state of the base layer of the animator.

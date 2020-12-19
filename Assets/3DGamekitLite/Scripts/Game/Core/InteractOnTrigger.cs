@@ -25,6 +25,10 @@ namespace Gamekit3D
             if (0 != (layers.value & 1 << other.gameObject.layer))
             {
                 ExecuteOnEnter(other);
+                if (gameObject.name == "Switch")
+                {
+
+                }
             }
         }
 

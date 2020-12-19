@@ -1,16 +1,32 @@
 ﻿using Gamekit3D;
+using Gamekit3D.GameCommands;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Gamekit3D.Damageable;
 
 public class EventHandler : MonoBehaviour
 {
     public List<EventData> eventList;
 
-    private GameObject player;
-
     private float lastTimeSent = 0;
     private uint eventCount = 0;
+
+    private void OnEnable()
+    {
+        Damageable.damageDelegateEvent += AddDamageEvent;
+        Damageable.deathDelegateEvent += AddDeathEvent;
+        PlayerController.positionDelegateEvent += AddPlayerPositionEvent;
+        SendOnTriggerEnter.buttonDelegateEvent += AddButtonPressedEvent;
+    }
+
+    private void OnDisable()
+    {
+        Damageable.damageDelegateEvent -= AddDamageEvent;
+        Damageable.deathDelegateEvent -= AddDeathEvent;
+        PlayerController.positionDelegateEvent -= AddPlayerPositionEvent;
+        SendOnTriggerEnter.buttonDelegateEvent -= AddButtonPressedEvent;
+    }
 
     void Start()
     {
@@ -33,51 +49,50 @@ public class EventHandler : MonoBehaviour
     }
 
     // Events
-    public void AddPlayerPositionEvent()
+    public void AddPlayerPositionEvent(PlayerController character)
     {
         eventCount++;
 
-        PlayerPosition newEvent = new PlayerPosition(player.transform.position, eventCount);
+        PlayerPosition newEvent = new PlayerPosition(character.transform.position, eventCount);
         eventList.Add(newEvent);
     }
 
-    public void AddButtonPressedEvent()
+    public void AddButtonPressedEvent(Vector3 position)
     {
         eventCount++;
 
-        ButtonPressed newEvent = new ButtonPressed(player.transform.position, eventCount);
+        ButtonPressed newEvent = new ButtonPressed(position, eventCount);
         eventList.Add(newEvent);
     }
 
-    public void AddPlayerDeathEvent(Damageable character)
+    public void AddDeathEvent(Damageable character, DamageMessage msg)
     {
         eventCount++;
 
-        /*PlayerDeath newEvent = new PlayerDeath(player.transform.position, eventCount, enemyType);
-        eventList.Add(newEvent);*/
+        if (LayerMask.LayerToName(msg.damager.gameObject.layer) == "Player")
+        {
+            EnemyKilled newEvent = new EnemyKilled(msg.damager.gameObject.transform.position, eventCount, character.gameObject.name);
+            eventList.Add(newEvent);
+        }
+        else if (LayerMask.LayerToName(msg.damager.gameObject.layer) == "Enemy")
+        {
+            PlayerDeath newEvent = new PlayerDeath(character.transform.position, eventCount, msg.damager.gameObject.name);
+            eventList.Add(newEvent);
+        }
+        else
+        {
+            int a = 0;
+        }
     }
 
-    public void AddReceiveDamageEvent(Damageable character)
+    public void AddDamageEvent(Damageable character, DamageMessage msg)
     {
         eventCount++;
 
-        /*ReceiveDamage newEvent = new ReceiveDamage(player.transform.position, eventCount, enemyType);
-        eventList.Add(newEvent);*/
-    }
-
-    public void AddDealDamageEvent(EnemyType enemyType)
-    {
-        eventCount++;
-
-        DealDamage newEvent = new DealDamage(player.transform.position, eventCount, enemyType);
-        eventList.Add(newEvent);
-    }
-
-    public void AddEnemyKilledEvent(EnemyType enemyType)
-    {
-        eventCount++;
-
-        EnemyKilled newEvent = new EnemyKilled(player.transform.position, eventCount, enemyType);
-        eventList.Add(newEvent);
+        if (LayerMask.LayerToName(msg.damager.gameObject.layer) == "Enemy")
+        {
+            ReceiveDamage newEvent = new ReceiveDamage(character.transform.position, eventCount, msg.damager.gameObject.name);
+            eventList.Add(newEvent);
+        }
     }
 }

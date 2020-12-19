@@ -25,7 +25,10 @@ namespace Gamekit3D
         public bool isInvulnerable { get; set; }
         public int currentHitPoints { get; private set; }
 
-        public UnityEvent OnDeath, OnReceiveDamage, OnHitWhileInvulnerable, OnBecomeVulnerable, OnResetDamage;
+        public UnityEvent OnDeath, OnReceiveDamage, OnHitWhileInvulnerable, OnBecomeVulnerable, OnResetDamage;        
+        public delegate void MyDataEvent(Damageable damageable, DamageMessage message);
+        public static MyDataEvent damageDelegateEvent;
+        public static MyDataEvent deathDelegateEvent;
 
         [Tooltip("When this gameObject is damaged, these other gameObjects are notified.")]
         [EnforceType(typeof(Message.IMessageReceiver))]
@@ -96,9 +99,15 @@ namespace Gamekit3D
             currentHitPoints -= data.amount;
 
             if (currentHitPoints <= 0)
+            {
                 schedule += OnDeath.Invoke; //This avoid race condition when objects kill each other.
+                deathDelegateEvent?.Invoke(this, data);
+            }
             else
+            {
                 OnReceiveDamage.Invoke();
+                damageDelegateEvent?.Invoke(this, data);
+            }
 
             var messageType = currentHitPoints <= 0 ? MessageType.DEAD : MessageType.DAMAGED;
 
