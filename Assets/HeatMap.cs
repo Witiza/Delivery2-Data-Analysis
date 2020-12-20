@@ -7,14 +7,14 @@ public class HeatMap : EditorWindow
     //---------HeatMap variables---------------------//
     Vector2 size;
     Vector2 middlepoint = Vector2.zero;
-    MapCube[,] heat_matrix;
+    GameObject[,] heat_matrix;
     public HeatMapRenderer renderer;
+    GameObject cube_prefab;
 
 
     [MenuItem("Window/Data Analysis/HeatMap")]
-    public static void ShowWindow()
+    public  void ShowWindow()
     {
-
         GetWindow<HeatMap>("HeatMap");
     }
 
@@ -24,21 +24,25 @@ public class HeatMap : EditorWindow
 
         size = EditorGUILayout.Vector2Field("Map Size", size);
         middlepoint = EditorGUILayout.Vector2Field("Middle Point", middlepoint);
+        cube_prefab = (GameObject)EditorGUILayout.ObjectField(cube_prefab, typeof(GameObject), true);
 
         if (GUILayout.Button("Generate"))
         {
+            DeleteMap();
             GenerateHeatmap();
         }
-        renderer = (HeatMapRenderer)EditorGUILayout.ObjectField(renderer, typeof(HeatMapRenderer), true);
-        
+        if (GUILayout.Button("Delete"))
+        {
+            DeleteMap();
+        }
+
         //Debug.Log(renderer.name);
     }
 
     private void GenerateHeatmap()
     {
         heat_matrix = null;
-        heat_matrix = new MapCube[(int)size.x, (int)size.y];
-
+        heat_matrix = new GameObject[(int)size.x, (int)size.y];
         for (int i = 0;i<size.x;i++)
         { 
             for(int j = 0;j<size.y;j++)
@@ -46,10 +50,26 @@ public class HeatMap : EditorWindow
                 Vector2 pos = middlepoint;
                 pos.x += i-size.x/2;
                 pos.y += j-size.y/2;
-                heat_matrix[i, j] = new MapCube(pos);
+                heat_matrix[i, j] = Instantiate(cube_prefab);
+                heat_matrix[i, j].GetComponent<MapCube>().GenerateColor();
+                heat_matrix[i, j].GetComponent<MapCube>().AdjoustPosition(pos);
             }
         }
-        renderer.Draw(heat_matrix);
+    }
+    private void DeleteMap()
+    {
+        if (heat_matrix != null)
+        {
+            for (int i = 0; i < size.x; i++)
+            {
+                for (int j = 0; j < size.y; j++)
+                {
+                    DestroyImmediate(heat_matrix[i, j]);
+                }
+            }
+            heat_matrix = null;
+        }
+
     }
 
 

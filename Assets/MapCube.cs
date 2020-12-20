@@ -1,15 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class MapCube 
+[ExecuteInEditMode]
+public class MapCube : MonoBehaviour
 {
-    public Vector3 position;
-    public MapCube(Vector2 pos)
+    public Color color;
+    Vector2 position;
+    EventData[] events;
+    public void Start()
     {
+
+    }
+    public void GenerateColor()
+    {
+        //Generate color depending on the events;
+        color.r = Random.Range(0.0f, 1.0f);
+        color.g = Random.Range(0.0f, 1.0f);
+        color.b = Random.Range(0.0f, 1.0f);
+        GetComponent<Renderer>().sharedMaterial.SetColor("_Color",color);
+    }
+
+    public void AdjoustPosition(Vector2 pos)
+    {
+        Vector3 position = transform.position;
+        position.y = 1000;
         position.x = pos.x;
-        position.y = 1;
         position.z = pos.y;
+        transform.position = position;
+        RaycastHit hit;
+        
+        if (Physics.Raycast(transform.position, Vector3.up * -1, out hit))
+        {
+            position = transform.position;
+            position.y = hit.point.y + 0.1f;
+
+            transform.position = position;
+        }
     }
     public void Draw()
     {
