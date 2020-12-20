@@ -16,6 +16,7 @@ namespace Gamekit3D
             if (pc != null)
             {
                 pc.Die(new Damageable.DamageMessage());
+                Damageable.deathDelegateEvent?.Invoke(pc.gameObject, gameObject);
             }
             if (audio != null)
             {
