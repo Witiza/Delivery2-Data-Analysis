@@ -9,6 +9,12 @@ public class EventHandler : MonoBehaviour
 {
     public List<EventData> eventList;
 
+    public string posData;
+    public string buttonData;
+    public string deathData;
+    public string dmgData;
+    public string enemyData;
+
     private float lastTimeSent = 0;
     private uint eventCount = 0;
 
@@ -119,24 +125,50 @@ public class EventHandler : MonoBehaviour
         { 
             if (variable == "\"dataType\":1")
             {
-
+                posData = data;
             }
             else if (variable == "\"dataType\":2")
             {
-
+                buttonData = data;
             }
             else if(variable == "\"dataType\":3")
             {
-
+                deathData = data;
             }
             else if(variable == "\"dataType\":4")
             {
-
+                dmgData = data;
             }
             else if(variable == "\"dataType\":5")
             {
-
+                enemyData = data;
             }
         }
     }
+
+    public string GetPos()
+    {
+        return posData;
+    }
+
+    public string GetButton()
+    {
+        return buttonData;
+    }
+
+    public string GetDeath()
+    {
+        return deathData;
+    }
+
+    public string GetDamage()
+    {
+        return dmgData;
+    }
+
+    public string GetEnemy()
+    {
+        return enemyData;
+    }
 }
+
