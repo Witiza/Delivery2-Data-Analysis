@@ -7,17 +7,21 @@ public class MapCube : MonoBehaviour
     public Color color;
     Vector2 position;
     EventData[] events;
+    HeatMap heatmap;
+    public Gradient gradient;
+
     public void Start()
     {
-
+        gradient.
     }
     public void GenerateColor()
     {
+
         //Generate color depending on the events;
         color.r = Random.Range(0.0f, 1.0f);
         color.g = Random.Range(0.0f, 1.0f);
         color.b = Random.Range(0.0f, 1.0f);
-        GetComponent<Renderer>().sharedMaterial.SetColor("_Color",color);
+        GetComponent<Renderer>().material.SetColor("_Color",color);
     }
 
     public void AdjoustPosition(Vector2 pos)

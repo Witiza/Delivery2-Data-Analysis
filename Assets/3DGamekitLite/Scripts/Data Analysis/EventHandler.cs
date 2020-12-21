@@ -18,6 +18,8 @@ public class EventHandler : MonoBehaviour
     private float lastTimeSent = 0;
     private uint eventCount = 0;
 
+    
+
     private void OnEnable()
     {
         Damageable.damageDelegateEvent += AddDamageEvent;
@@ -44,10 +46,14 @@ public class EventHandler : MonoBehaviour
         // Send list of stored events every 3 seconds
         if (Time.time - lastTimeSent > 3)
         {
-            foreach (EventData e in eventList)
-            {
-                Load(e);    
-            }
+            //foreach (EventData e in eventList)
+            //{
+            //    Load(e);
+            //}
+            SaveData to_save = new SaveData();
+            to_save.events = eventList;
+            string potion = JsonUtility.ToJson(to_save);
+            System.IO.File.AppendAllText(Application.persistentDataPath + "/PotionData.json", potion);
 
             lastTimeSent = Time.time;
             eventList.Clear();
@@ -120,6 +126,7 @@ public class EventHandler : MonoBehaviour
     public void Load(EventData eventData)
     {
         string data = eventData.GetJson();
+        System.IO.File.AppendAllText(Application.persistentDataPath + "/PotionData.json", data);
         string[] variables = data.Split(',');
         foreach (string variable in variables)
         { 

@@ -93,3 +93,9 @@ public class EnemyKilled : EventData
     public Vector3 position;
     public string enemyType;
 }
+
+[Serializable]
+public class SaveData
+{
+    public List<EventData> events;
+}
