@@ -210,7 +210,7 @@ namespace Gamekit3D
 
             m_PreviouslyGrounded = m_IsGrounded;
 
-            if (Time.time - lastTimeSent > 0.5f)
+            if (Time.time - lastTimeSent > 0.1f)
             {
                 positionDelegateEvent?.Invoke(this);
                 lastTimeSent = Time.time;

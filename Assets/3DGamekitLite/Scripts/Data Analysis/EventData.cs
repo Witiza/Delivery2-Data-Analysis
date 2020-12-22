@@ -33,6 +33,7 @@ public class EventData
     }
 }
 
+[System.Serializable]
 public class PlayerPosition : EventData
 {
     public PlayerPosition(Vector3 position, uint event_id) : base(event_id)
@@ -44,6 +45,7 @@ public class PlayerPosition : EventData
     public Vector3 position;
 }
 
+[System.Serializable]
 public class ButtonPressed : EventData
 {
     public ButtonPressed(Vector3 position, uint event_id) : base(event_id)
@@ -55,6 +57,7 @@ public class ButtonPressed : EventData
     public Vector3 position;
 }
 
+[System.Serializable]
 public class PlayerDeath : EventData
 {
     public PlayerDeath(Vector3 position, uint event_id, string enemyType) : base(event_id)
@@ -68,6 +71,7 @@ public class PlayerDeath : EventData
     public string enemyType;
 }
 
+[System.Serializable]
 public class ReceiveDamage : EventData
 {
     public ReceiveDamage(Vector3 position, uint event_id, string enemyType) : base(event_id)
@@ -81,6 +85,7 @@ public class ReceiveDamage : EventData
     public string enemyType;
 }
 
+[System.Serializable]
 public class EnemyKilled : EventData
 {
     public EnemyKilled(Vector3 position, uint event_id, string enemyType) : base(event_id)
@@ -95,7 +100,28 @@ public class EnemyKilled : EventData
 }
 
 [Serializable]
-public class SaveData
+public class SavePosition
 {
-    public List<EventData> events;
+    public List<PlayerPosition> events;
+}
+
+[Serializable]
+public class SaveButton
+{
+    public List<ButtonPressed> events;
+}
+[Serializable]
+public class SaveDeath
+{
+    public List<PlayerDeath> events;
+}
+[Serializable]
+public class SaveKilled
+{
+    public List<EnemyKilled> events;
+}
+[Serializable]
+public class SaveDamaged
+{
+    public List<ReceiveDamage> events;
 }

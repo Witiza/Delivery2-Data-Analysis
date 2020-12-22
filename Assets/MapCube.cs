@@ -1,27 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[ExecuteInEditMode]
+
 public class MapCube : MonoBehaviour
 {
     public Color color;
     Vector2 position;
-    EventData[] events;
-    HeatMap heatmap;
+    public List<PlayerPosition> positionList;
+    public List<ButtonPressed> buttonList;
+    public List<PlayerDeath> deathList;
+    public List<EnemyKilled> killedList;
+    public List<ReceiveDamage> damagedList;
+    public HeatMap heatmap;
     public Gradient gradient;
+    public LayerMask mask;
 
     public void Start()
     {
-        gradient.
+        gameObject.SetActive(false);
     }
     public void GenerateColor()
     {
-
+        float factor = 0;
+        if (positionList.Count > 0 && heatmap.show_positions)
+            factor += positionList.Count;
+        if (buttonList.Count > 0 && heatmap.show_buttons)
+            factor += buttonList.Count;
+        if (deathList.Count > 0 && heatmap.show_deaths)
+            factor += deathList.Count;
+        if (killedList.Count > 0 && heatmap.show_killed)
+            factor += killedList.Count;
+        if (damagedList.Count > 0 && heatmap.show_damaged)
+            factor += damagedList.Count;
+        //float factor = positionList.Count + buttonList.Count + deathList.Count + killedList.Count;
+        factor /= heatmap.events_per_pos;
+        factor = 1 - factor;
         //Generate color depending on the events;
-        color.r = Random.Range(0.0f, 1.0f);
-        color.g = Random.Range(0.0f, 1.0f);
-        color.b = Random.Range(0.0f, 1.0f);
-        GetComponent<Renderer>().material.SetColor("_Color",color);
+        color.r = factor;
+        color.g = factor;
+        color.b = factor;
+        var tmp_material = new Material(GetComponent<Renderer>().sharedMaterial);
+        tmp_material.color = color;
+        GetComponent<Renderer>().material = tmp_material;
     }
 
     public void AdjoustPosition(Vector2 pos)
@@ -32,8 +52,8 @@ public class MapCube : MonoBehaviour
         position.z = pos.y;
         transform.position = position;
         RaycastHit hit;
-        
-        if (Physics.Raycast(transform.position, Vector3.up * -1, out hit))
+
+        if (Physics.Raycast(transform.position, Vector3.up * -1, out hit,mask))
         {
             position = transform.position;
             position.y = hit.point.y + 0.1f;
@@ -41,10 +61,9 @@ public class MapCube : MonoBehaviour
             transform.position = position;
         }
     }
-    public void Draw()
+
+    private void OnEnable()
     {
-
+        Debug.Log("Enabled");
     }
-
-
 }
